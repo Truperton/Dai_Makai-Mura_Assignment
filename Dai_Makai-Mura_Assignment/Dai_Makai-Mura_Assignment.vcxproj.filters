@@ -13,10 +13,36 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\Game World Entities">
+      <UniqueIdentifier>{e333d45c-f7a2-4a11-b166-5862035c86a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Game World Entities">
+      <UniqueIdentifier>{f402a3da-ba20-4f1a-b0c5-04967d253a4d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Dai_Makai-Mura_Assignment.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerCharacter.cpp">
+      <Filter>Resource Files\Game World Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>Resource Files\Game World Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="GroundEntity.cpp">
+      <Filter>Resource Files\Game World Entities</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="PlayerCharacter.h">
+      <Filter>Header Files\Game World Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="GroundEntity.h">
+      <Filter>Header Files\Game World Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>Header Files\Game World Entities</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
