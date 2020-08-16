@@ -19,6 +19,12 @@
     <Filter Include="Resource Files\Game World Entities">
       <UniqueIdentifier>{f402a3da-ba20-4f1a-b0c5-04967d253a4d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Utility">
+      <UniqueIdentifier>{8e7dc5a0-2587-4fc3-83d1-5ad44d6cdcf6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Utility">
+      <UniqueIdentifier>{fb5b23f2-de65-4d9b-a474-9948ad16382e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Dai_Makai-Mura_Assignment.cpp">
@@ -33,6 +39,12 @@
     <ClCompile Include="GroundEntity.cpp">
       <Filter>Resource Files\Game World Entities</Filter>
     </ClCompile>
+    <ClCompile Include="sharedVariables.cpp">
+      <Filter>Resource Files\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="TileMap.cpp">
+      <Filter>Resource Files\Utility</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PlayerCharacter.h">
@@ -43,6 +55,12 @@
     </ClInclude>
     <ClInclude Include="Entity.h">
       <Filter>Header Files\Game World Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="sharedVariables.h">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="TileMap.h">
+      <Filter>Header Files\Utility</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -2,7 +2,10 @@
 //
 
 #include <iostream>
+#include <array>
 #include <SFML/Graphics.hpp>
+#include "sharedVariables.h"
+#include "TileMap.h"
 #include "Entity.h"
 #include "PlayerCharacter.h"
 
@@ -14,16 +17,21 @@ using namespace sf;
 sf::Vector2f theGameWindow_CurrentDimensions(960, 640);
 sf::Vector2f theGameWindow_PerspectiveDimensions(960, 640);
 sf::RenderWindow theGameWindow(sf::VideoMode(theGameWindow_CurrentDimensions.x, theGameWindow_CurrentDimensions.y), "Dai Makai-Mura", sf::Style::Titlebar);
-PlayerCharacter MainPlayer;
+PlayerCharacter *MainPlayer;
+TileMap *mainTileMap;
+sharedVariables gameVariables;
+
 void InputListener();
 
 int main()
 {
 	//Local Variables
 		//Clock Variables
-	Clock clockSpeed;
-	Time delta;
-	float deltaAsSeconds;
+	//Clock clockSpeed;
+	//Time delta;
+	//float deltaAsSeconds;
+	mainTileMap = new TileMap();
+	MainPlayer = new PlayerCharacter();
 	Texture grass;
 	if (!grass.loadFromFile("Assets/Grass_Tile_1.png")) //The "Background" Image...
 	{
@@ -40,24 +48,24 @@ int main()
 	Vector2f grassSpawn(0.f, 600);
 	//Main main()
 	Vector2f position(100.f, 100.f);
-	MainPlayer.initialise("Assets/Main_Character.png", 500, 400, 500, 1, position);
-	MainPlayer.mainView = theGameWindow.getDefaultView();
+	MainPlayer->initialise("Assets/Main_Character.png", 500.0f, 400.0f, 500.0f, 1, position);
+	MainPlayer->mainView = theGameWindow.getDefaultView();
 	theGameWindow.setFramerateLimit(60);
 	while (theGameWindow.isOpen())
 	{
-		delta = clockSpeed.restart();
+		gameVariables.delta = gameVariables.clockSpeed.restart();
 		InputListener();
 		theGameWindow.clear();
-		MainPlayer.update(delta.asSeconds());
-		MainPlayer.mainView.setCenter(MainPlayer.position);
-		theGameWindow.setView(MainPlayer.mainView);
+		MainPlayer->update(gameVariables.delta.asSeconds());
+		MainPlayer->mainView.setCenter(MainPlayer->position);
+		theGameWindow.setView(MainPlayer->mainView);
 		grassSprite.setPosition(grassSpawn);
 		for (int i = 0; i < 30; i++)
 		{
 			theGameWindow.draw(grassSprite);
 			grassSprite.move({ 50, 0 });
 		}
-		theGameWindow.draw(MainPlayer.sprite);
+		theGameWindow.draw(MainPlayer->sprite);
 		theGameWindow.display();
 	}
 }
@@ -78,26 +86,26 @@ void InputListener()
 		{
 			if (event.key.code == sf::Keyboard::Space)
 			{
-				MainPlayer.jump();
+				MainPlayer->jump();
 			}
 			if (event.key.code == sf::Keyboard::D)
 			{
-				MainPlayer.horizontalMove(true, true);
+				MainPlayer->horizontalMove(true, true);
 			}
 			if (event.key.code == sf::Keyboard::A)
 			{
-				MainPlayer.horizontalMove(false, true);
+				MainPlayer->horizontalMove(false, true);
 			}
 		}
 		else if (event.type == sf::Event::KeyReleased)
 		{
 			if (event.key.code == sf::Keyboard::D)
 			{
-				MainPlayer.horizontalMove(true, false);
+				MainPlayer->horizontalMove(true, false);
 			}
 			if (event.key.code == sf::Keyboard::A)
 			{
-				MainPlayer.horizontalMove(false, false);
+				MainPlayer->horizontalMove(false, false);
 			}
 		}
 	}
