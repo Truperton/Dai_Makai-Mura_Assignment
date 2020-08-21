@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <array>
+#include <random>
 #include <SFML/Graphics.hpp>
 
 using namespace std;
@@ -11,5 +12,7 @@ struct sharedVariables
 {
 	Clock clockSpeed;
 	Time delta;
-	array<array<unsigned char, 128>, 64> gameMap;
+	mt19937 numberGenerator;
+	sf::RenderWindow *theGameWindow;
+	array<array<unsigned char, 128>, 64> *gameMap;
 };

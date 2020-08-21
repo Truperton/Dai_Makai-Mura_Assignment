@@ -7,12 +7,11 @@ class PlayerCharacter : public GroundEntity
 public:
 	// Public variables
 	View mainView;
+	Texture backgroundTexture;
+	Sprite backgroundSprite;
 
 	// Constructor
-	PlayerCharacter()
-	{
-		cout << "PlayerCharacter object created\n";
-	}
+	PlayerCharacter();
 
 	// Destructor
 	~PlayerCharacter()

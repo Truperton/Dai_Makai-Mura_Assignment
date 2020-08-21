@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <fstream>
 #include <array>
+#include "sharedVariables.h"
 
 using namespace std;
 using namespace sf;
@@ -15,7 +16,7 @@ public:
 
 	// Constructor
 
-	TileMap();
+	TileMap(sharedVariables *inputSharedVariables);
 
 	// Destructor
 
@@ -31,14 +32,20 @@ public:
 	/// <param name="inputGameMApLoaction"> The name of the game map CSV. </param>
 	/// <param name="inputTileSize"> The size in height and width of tiles in pixels. </param>
 	/// <param name="inputMap"> The two dimensional array on which the game map is to be based off of. </param>
-	bool load(const string inputTileSetLoadLocation, const string inputGameMapLocation, Vector2u inputTileSize, array<array<unsigned char, 128>, 128> *inputMap);
+	bool load(const string inputTileSetLoadLocation, const string inputGameMapLocation, Vector2u inputTileSize, array<array<unsigned char, 128>, 64> *inputMap);
+
+protected:
+	// Protected variables
+	sharedVariables *localGameVariablesPointer;
+
+	// Protected methods
 
 private:
 	// Private variables
 
 	VertexArray mapVertices;
 	Texture mapTileSet;
-	array<array<unsigned char, 128>, 128> *localMapPointer;
+	array<array<unsigned char, 128>, 64> *localMapPointer;
 
 	// Private methods
 

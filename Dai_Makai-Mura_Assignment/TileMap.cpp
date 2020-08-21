@@ -1,7 +1,8 @@
 #include "TileMap.h"
 
-TileMap::TileMap()
+TileMap::TileMap(sharedVariables *inputSharedVariables)
 {
+	localGameVariablesPointer = inputSharedVariables;
 	cout << "[TileMap constructor] TileMap constructed" << endl;
 }
 
@@ -10,7 +11,7 @@ TileMap::~TileMap()
 	cout << "[TileMap destructor] TileMap destroyed" << endl;
 }
 
-bool TileMap::load(const string inputTileSetLoadLocation, const string inputGameMapLocation, Vector2u inputTileSize, array<array<unsigned char, 128>, 128> *inputMap)
+bool TileMap::load(const string inputTileSetLoadLocation, const string inputGameMapLocation, Vector2u inputTileSize, array<array<unsigned char, 128>, 64> *inputMap)
 {
 	// Local Variables
 	unsigned short int height, width;
@@ -34,7 +35,18 @@ bool TileMap::load(const string inputTileSetLoadLocation, const string inputGame
 		{
 			// Retrieve the tile number
 			int tileNumber = (*inputMap)[y][x];
-
+			//if (tileNumber >> 10)
+			//{
+			//	cout << "help" << endl;
+			//}
+			//if (tileNumber > char(99))
+			//{
+			//	cout << "99 or more" << endl;
+			//}
+			if (tileNumber >= 200)
+			{
+				tileNumber - 190;
+			}
 			// Get the coordinates in the tileset texture
 			int tileX = tileNumber % (mapTileSet.getSize().x / inputTileSize.x);
 			int tileY = tileNumber / (mapTileSet.getSize().x / inputTileSize.x);
@@ -66,6 +78,7 @@ bool TileMap::loadGameMap(const string inputGameMapLocation)
 	array<string, 128> stringArray;
 	string *stringToArray = new string;
 	string::size_type stringSizeType;
+	uniform_int_distribution<int> tileDistribution(0, 9);
 	int counter, counterTwo, counterThree, maxSizeOne, maxSizeTwo, tempInt;
 
 	// Main "loadGameMap()"
@@ -85,7 +98,7 @@ bool TileMap::loadGameMap(const string inputGameMapLocation)
 
 		stringToArray = new string;
 		counterThree = 0;
-		maxSizeOne = stringArray.size();
+		maxSizeOne = 64;//stringArray.size();
 		for (counter = 0; counter < maxSizeOne; counter++)
 		{
 			maxSizeTwo = stringArray[counter].size();
@@ -96,7 +109,7 @@ bool TileMap::loadGameMap(const string inputGameMapLocation)
 					if (counterTwo >= maxSizeTwo)
 					{
 						tempInt = stoi(*stringToArray, &stringSizeType);
-						(*localMapPointer)[counter][counterThree] = tempInt;
+						(*localMapPointer)[counter][counterThree] = tempInt + tileDistribution(localGameVariablesPointer->numberGenerator);
 						stringToArray = NULL;
 						stringToArray = new string;
 					}
@@ -110,7 +123,7 @@ bool TileMap::loadGameMap(const string inputGameMapLocation)
 					if (stringToArray->length() > 0)
 					{
 						tempInt = stoi(*stringToArray, &stringSizeType);
-						(*localMapPointer)[counter][counterThree] = tempInt;
+						(*localMapPointer)[counter][counterThree] = tempInt + tileDistribution(localGameVariablesPointer->numberGenerator);
 					}
 					else
 					{

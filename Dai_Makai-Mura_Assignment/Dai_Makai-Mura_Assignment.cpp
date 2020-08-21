@@ -16,7 +16,7 @@ using namespace sf;
 	//Game Window Variables
 sf::Vector2f theGameWindow_CurrentDimensions(960, 640);
 sf::Vector2f theGameWindow_PerspectiveDimensions(960, 640);
-sf::RenderWindow theGameWindow(sf::VideoMode(theGameWindow_CurrentDimensions.x, theGameWindow_CurrentDimensions.y), "Dai Makai-Mura", sf::Style::Titlebar);
+//sf::RenderWindow theGameWindow(sf::VideoMode(theGameWindow_CurrentDimensions.x, theGameWindow_CurrentDimensions.y), "Dai Makai-Mura", sf::Style::Titlebar);
 PlayerCharacter *MainPlayer;
 TileMap *mainTileMap;
 sharedVariables gameVariables;
@@ -30,43 +30,29 @@ int main()
 	//Clock clockSpeed;
 	//Time delta;
 	//float deltaAsSeconds;
-	mainTileMap = new TileMap();
+	gameVariables.gameMap = new array<array<unsigned char, 128>, 64>;
+	mainTileMap = new TileMap(&gameVariables);
 	MainPlayer = new PlayerCharacter();
-	Texture grass;
-	if (!grass.loadFromFile("Assets/Grass_Tile_1.png")) //The "Background" Image...
-	{
-		cout << "Error 2: Loading The Game Image(s) Failed. Make Sure ALL Images Are 8-bit-RGBA Images..." << "\n";
-		system("pause");
-	}
-	else
-	{
-		cout << "Successfully loaded: Assets/Grass_Tile_1.png" << endl;
-	}
-	Sprite grassSprite;
-	grassSprite.setTexture(grass);
-	grassSprite.setScale({ 0.5, 0.5 });
-	Vector2f grassSpawn(0.f, 600);
+	mainTileMap->load("Assets/Tile Sets/Main Tile Set.png", "Map 1.csv", Vector2u(64, 64), gameVariables.gameMap);
 	//Main main()
-	Vector2f position(100.f, 100.f);
-	MainPlayer->initialise("Assets/Main_Character.png", 500.0f, 400.0f, 500.0f, 1, position);
-	MainPlayer->mainView = theGameWindow.getDefaultView();
-	theGameWindow.setFramerateLimit(60);
-	while (theGameWindow.isOpen())
+	gameVariables.theGameWindow = new RenderWindow(sf::VideoMode(theGameWindow_CurrentDimensions.x, theGameWindow_CurrentDimensions.y), "Dai Makai-Mura", sf::Style::Default);
+	Vector2f position(200.0f, 200.f);
+	MainPlayer->initialise("Assets/Sprite Sheets/Main Character.png", 500.0f, 400.0f, 500.0f, 1, position);
+	MainPlayer->mainView = gameVariables.theGameWindow->getDefaultView();
+	MainPlayer->localGameVariablesPointer = &gameVariables;
+	gameVariables.theGameWindow->setFramerateLimit(60);
+	while (gameVariables.theGameWindow->isOpen())
 	{
 		gameVariables.delta = gameVariables.clockSpeed.restart();
 		InputListener();
-		theGameWindow.clear();
+		gameVariables.theGameWindow->clear();
+		gameVariables.theGameWindow->draw(MainPlayer->backgroundSprite);
+		gameVariables.theGameWindow->draw(*mainTileMap);
 		MainPlayer->update(gameVariables.delta.asSeconds());
 		MainPlayer->mainView.setCenter(MainPlayer->position);
-		theGameWindow.setView(MainPlayer->mainView);
-		grassSprite.setPosition(grassSpawn);
-		for (int i = 0; i < 30; i++)
-		{
-			theGameWindow.draw(grassSprite);
-			grassSprite.move({ 50, 0 });
-		}
-		theGameWindow.draw(MainPlayer->sprite);
-		theGameWindow.display();
+		gameVariables.theGameWindow->setView(MainPlayer->mainView);
+		gameVariables.theGameWindow->draw(*MainPlayer);
+		gameVariables.theGameWindow->display();
 	}
 }
 
@@ -76,11 +62,11 @@ void InputListener()
 	sf::Event event;
 
 	//Main "InputListener()"
-	while (theGameWindow.pollEvent(event))
+	while (gameVariables.theGameWindow->pollEvent(event))
 	{
 		if (event.key.code == sf::Keyboard::Escape || event.type == sf::Event::Closed)
 		{
-			theGameWindow.close();
+			gameVariables.theGameWindow->close();
 		}
 		else if (event.type == sf::Event::KeyPressed)
 		{
